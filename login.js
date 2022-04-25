@@ -26,19 +26,17 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(express.static(path.join(__dirname, 'images')))
 app.use(auth(config));
 
-app.get('/', (req, res) => {
-	res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+app.get('/loginpage', (req, res) => {
+	res.sendFile(path.join(__dirname + '/loginpage.html'));
   });
 
-app.get('/', function(request, response) {
-
-	response.sendFile(path.join(__dirname + '/login.html'));
+app.get('/', (req, res) => {
+	req.oidc.isAuthenticated() ? res.sendFile(path.join(__dirname + '/home.html')) : res.sendFile(path.join(__dirname + '/loginpage.html'));
 });
 
-app.post('/home', function(request, response) {
-	response.sendFile(path.join(__dirname + '/home.html'));
-});
-
+// app.post('/home', function(request, response) {
+// 	response.sendFile(path.join(__dirname + '/home.html'));
+// });
 
 app.listen(3000);
 
